@@ -1,0 +1,197 @@
+﻿@charset "UTF-8";
+
+/* main.jspのスタイリング */
+
+/* 全体のコンテナのスタイリング */
+.container {
+  width: 100vw; /* 幅をビューポートの100%に設定 */
+  max-width: 100vw; /* 最大幅もビューポートの100%に設定 */
+  height: 100vh; /* 高さをビューポートの100%に設定 */
+  padding: 0; /* 内側の余白をゼロに設定 */
+}
+
+/* ヘッダー部分のスタイリング */
+.header {
+  display: flex; /* フレックスボックスモデルを使用 */
+  justify-content: space-between; /* 子要素を両端に配置 */
+  align-items: center; /* 子要素を中央揃え */
+  width: 100%; /* 幅を100%に設定 */
+  height: 40px; /* 高さを40pxに設定 */
+  padding: 0 5px; /* 左右の内側の余白を5pxに設定 */
+  background-color: #3E0B3F; /* 背景色を黒に設定 */
+  color: white; /* テキストの色を白に設定 */
+}
+
+/* メインコンテンツ部分のスタイリング */
+.main {
+  display: flex; /* フレックスボックスモデルを使用 */
+  width: 100%; /* 幅を100%に設定 */
+  height: calc(100% - 40px); /* 高さをヘッダーを除いた残りに設定 */
+}
+
+/* メインコンテンツ内のhr要素のスタイリング */
+.main hr {
+  margin: 0; /* マージンをゼロに設定 */
+}
+
+/* 左側メニュー部分のスタイリング */
+.left {
+  overflow: auto; /* 内容がオーバーフローしたらスクロールバー表示 */
+  width: 200px; /* 幅を200pxに設定 */
+  height: 100%; /* 高さを100%に設定 */
+  background-color: #532455; /* 背景色を設定 */
+  color: white; /* テキストの色を白に設定 */
+}
+
+/* 左側メニュー内のh2要素のスタイリング */
+.left h2 {
+  padding-left: 5px; /* 左側の内側の余白を5pxに設定 */
+}
+
+/* 左側メニュー内のdetails要素のスタイリング */
+.left details {
+  margin-left: 5px; /* 左側のマージンを5pxに設定 */
+  margin-top: 10px; /* 上側のマージンを10pxに設定 */
+}
+
+/* 左側メニュー内のリスト名のスタイリング */
+.left .list-name {
+  margin-left: 15px; /* 左側のマージンを15pxに設定 */
+  text-decoration: none; /* テキストの装飾をなしに設定 */
+  color: white; /* テキストの色を白に設定 */
+}
+
+/* メインコンテンツエリアのスタイリング */
+.contents {
+  flex: 1; /* フレックスアイテムとして残りのスペースを占有 */
+  position: relative; /* 位置指定の基準点を設定 */
+  background-color: white; /* 背景色を白に設定 */
+  color: black; /* テキストの色を黒に設定 */
+}
+
+/* メインコンテンツ内のメンバー追加ボタンのスタイリング */
+.contents .join-member-button {
+  position: absolute; /* 絶対位置指定 */
+  top: 5px; /* 上から5pxの位置 */
+  right: 5px; /* 右から5pxの位置 */
+}
+
+/* メインコンテンツ内のh2要素のスタイリング */
+.contents h2 {
+  padding-left: 5px; /* 左側の内側の余白を5pxに設定 */
+}
+
+/* メインコンテンツ内のメインエリアのスタイリング */
+.contents-main {
+  overflow: auto; /* 内容がオーバーフローしたらスクロールバー表示 */
+  height: calc(100% - 110px); /* 高さをヘッダーとフッターを除いた残りに設定 */
+}
+
+/* メインコンテンツ内のログエリアのスタイリング */
+.contents-main .log-area {
+  display: flex; /* フレックスボックスモデルを使用 */
+}
+
+/* メインコンテンツ内のログエリアのp要素のスタイリング */
+.contents-main .log-area p {
+  margin-bottom: 0; /* 下側のマージンをゼロに設定 */
+}
+
+/* メインコンテンツ内のログアイコンのスタイリング */
+.contents-main .log-icon {
+  margin-top: 10px; /* 上側のマージンを10pxに設定 */
+  margin-left: 5px; /* 左側のマージンを5pxに設定 */
+}
+
+/* メインコンテンツ内のログアイコン内のimg要素のスタイリング */
+.contents-main .log-icon img {
+  width: 50px; /* 幅を50pxに設定 */
+  border-radius: 25px; /* 角を丸める（円形に） */
+}
+
+/* メインコンテンツ内のログボックスのスタイリング */
+.contents-main .log-box {
+  position: relative;
+  flex: 1; /* フレックスアイテムとして残りのスペースを占有 */
+  margin: 5px; /* すべての側のマージンを5pxに設定 */
+  padding: 5px; /* すべての側の内側の余白を5pxに設定 */
+  border-radius: 5px; /* 角を丸める */
+  background-color: #efefef; /* 背景色を設定 */
+}
+
+/* メインコンテンツ内のログボックスヘッダーのスタイリング */
+.contents-main .log-box-header {
+  display: flex; /* フレックスボックスモデルを使用 */
+  justify-content: space-between; /* 子要素を両端に配置 */
+}
+
+/* メインコンテンツ内のログ名のスタイリング */
+.contents-main .log-name {
+  font-weight: bold; /* フォントを太字に設定 */
+}
+
+/* メインコンテンツ内のログ時間のスタイリング */
+.contents-main .log-time {
+  font-size: 0.8rem; /* フォントサイズを0.8remに設定 */
+  opacity: 0.5; /* 不透明度を50%に設定 */
+}
+
+/* フロートボタンのスタイル */
+.log-box-float-button {
+  border: none; /* ボタンの枠線を無くす */
+}
+
+/* フロートボタン内の画像に適用するスタイル */
+.log-box-float-button img {
+  width: 20px; /* 画像の幅を20pxに設定 */
+  height: 20px; /* 画像の高さを20pxに設定 */
+}
+
+.log-box-float {
+  display: none;
+  position: absolute;
+  top: -10px; /* エリアの上に表示 */
+  right: 20px; /* エリアの右に表示 */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 影を追加 */
+  z-index: 1; /* 他の要素の上に表示 */
+}
+
+/* ログボックスのヘッダーにマウスがホバーされた時の動作 */
+.log-box-header:hover .log-box-float {
+  display: block; /* フロート要素を表示 */
+}
+
+/* ログボックス内のフロート要素に含まれるspanタグのスタイル */
+.log-box-float span {
+  margin: 0 5px; /* 左右のマージンを5pxに設定 */
+  cursor: pointer; /* マウスカーソルをポインターに変更 */
+}
+
+/* メインコンテンツフッターのスタイリング */
+.contents-footer {
+  position: absolute; /* 絶対位置指定 */
+  bottom: 0; /* 下端に配置 */
+  width: 100%; /* 幅を100%に設定 */
+}
+
+/* フッター内のフォームラップスタイル */
+.contents-footer .form-wrap {
+  display: flex; /* フレックスボックスを使用してアイテムを横並びに配置 */
+  justify-content: space-between; /* アイテムを均等に配置 */
+  padding: 10px; /* 全周のパディング */
+}
+
+/* テキスト入力フィールドのスタイル */
+.contents-footer .form-wrap input[type="text"] {
+  flex: 1; /* フレックスアイテムとしての拡張率を1に設定 */
+  padding: 10px 5px; /* 内側の余白を上下に10px、左右に5pxに設定 */
+}
+
+/* 送信ボタンのスタイル */
+.contents-footer .form-wrap input[type="submit"] {
+  width: 50px; /* 送信ボタンの幅を50pxに設定 */
+}
