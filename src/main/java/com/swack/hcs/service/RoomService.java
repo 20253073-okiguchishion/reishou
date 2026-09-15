@@ -64,7 +64,6 @@ public class RoomService {
 
   /**
    * 次のルームIDを採番する.
-   * 現在の最大ROOMIDの連番部分に1を加えた値を "R" + 4桁ゼロ埋めの形式で返す.
    *
    * @return 採番されたルームID
    */
