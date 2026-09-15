@@ -14,6 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RoomService {
 
+  /** 部屋IDの接頭辞. */
+  private static final String ROOM_ID_PREFIX = "R";
+
+  /** 部屋IDの連番部分の桁数. */
+  private static final int ROOM_ID_SEQ_LENGTH = 4;
+
   @Autowired
   private RoomRepository roomRepository;
 
@@ -25,6 +31,52 @@ public class RoomService {
    */
   public Room getRoom(String roomId) {
     return roomRepository.getRoom(roomId);
+  }
+
+  /**
+   * ルーム名が既に登録済みかどうかを確認する.
+   *
+   * @param roomName ルーム名
+   * @return 登録済みの場合はtrue
+   */
+  public boolean isRegistered(String roomName) {
+    return roomRepository.existsByRoomName(roomName);
+  }
+
+  /**
+   * 新しいルームを作成する.
+   *
+   * @param roomName      ルーム名
+   * @param createdUserId 作成者のユーザID
+   * @param privated      非公開ルームかどうか
+   * @return 作成されたルーム情報
+   */
+  public Room createRoom(String roomName, String createdUserId, boolean privated) {
+    String roomId = generateRoomId();
+
+    Room room = new Room(roomId, roomName, createdUserId, false, privated, 1);
+
+    roomRepository.insertRoom(room);
+    roomRepository.insertJoinRoom(roomId, createdUserId);
+
+    return room;
+  }
+
+  /**
+   * 次のルームIDを採番する.
+   * 現在の最大ROOMIDの連番部分に1を加えた値を "R" + 4桁ゼロ埋めの形式で返す.
+   *
+   * @return 採番されたルームID
+   */
+  private String generateRoomId() {
+    String maxRoomId = roomRepository.getMaxRoomId();
+
+    int nextSeq = 1;
+    if (maxRoomId != null && maxRoomId.length() == (1 + ROOM_ID_SEQ_LENGTH)) {
+      nextSeq = Integer.parseInt(maxRoomId.substring(1)) + 1;
+    }
+
+    return String.format("%s%0" + ROOM_ID_SEQ_LENGTH + "d", ROOM_ID_PREFIX, nextSeq);
   }
 
 }
