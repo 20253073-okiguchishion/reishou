@@ -1,6 +1,7 @@
 package com.swack.hcs.repository;
 
 import com.swack.hcs.bean.Room;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,13 +81,11 @@ public class RoomRepository {
 
   /**
    * 現在登録されている部屋の中で、最も大きい数値のROOMIDを取得する.
-   * 部屋IDは "R" + 4桁の連番（例: R0001）という体系で払い出す.
    *
    * @return 現在の最大ROOMID（1件も存在しない場合はnull）
    */
   public String getMaxRoomId() {
     final String sql = "SELECT MAX(ROOMID) AS MAXROOMID FROM ROOMS";
-
     return jdbc.queryForObject(sql, new HashMap<>(), String.class);
   }
 
@@ -104,6 +103,50 @@ public class RoomRepository {
     params.put("userId", userId);
 
     jdbc.update(sql, params);
+  }
+
+  /**
+   * 参加可能な公開ルーム一覧を取得する（自分が参加済みのものは除く）.
+   *
+   * @param userId ユーザID
+   * @return 参加可能な公開ルームのリスト
+   */
+  public List<Room> getPublicRooms(String userId) {
+    final String sql = "SELECT ROOMID, ROOMNAME FROM ROOMS "
+        + "WHERE PRIVATED = FALSE "
+        + "AND ROOMID NOT IN (SELECT ROOMID FROM JOINROOM WHERE USERID = :userId)";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("userId", userId);
+
+    List<Map<String, Object>> resultList = jdbc.queryForList(sql, params);
+
+    List<Room> roomList = new ArrayList<>();
+    for (Map<String, Object> map : resultList) {
+      String roomId = (String) map.get("ROOMID");
+      String roomName = (String) map.get("ROOMNAME");
+      roomList.add(new Room(roomId, roomName));
+    }
+
+    return roomList;
+  }
+
+  /**
+   * 指定されたユーザーが指定されたルームに既に参加しているかを確認する.
+   *
+   * @param roomId ルームID
+   * @param userId ユーザID
+   * @return 参加済みの場合はtrue
+   */
+  public boolean isRoomJoined(String roomId, String userId) {
+    final String sql = "SELECT COUNT(*) FROM JOINROOM WHERE ROOMID = :roomId AND USERID = :userId";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("roomId", roomId);
+    params.put("userId", userId);
+
+    Integer count = jdbc.queryForObject(sql, params, Integer.class);
+    return count != null && count > 0;
   }
 
 }

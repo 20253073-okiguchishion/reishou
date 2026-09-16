@@ -2,6 +2,7 @@ package com.swack.hcs.service;
 
 import com.swack.hcs.bean.Room;
 import com.swack.hcs.repository.RoomRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,13 +54,30 @@ public class RoomService {
    */
   public Room createRoom(String roomName, String createdUserId, boolean privated) {
     String roomId = generateRoomId();
-
     Room room = new Room(roomId, roomName, createdUserId, false, privated, 1);
-
     roomRepository.insertRoom(room);
     roomRepository.insertJoinRoom(roomId, createdUserId);
-
     return room;
+  }
+
+  /**
+   * 参加可能な公開ルーム一覧を取得する（自分が参加済みのものは除く）.
+   *
+   * @param userId ユーザID
+   * @return 参加可能な公開ルームのリスト
+   */
+  public List<Room> getPublicRooms(String userId) {
+    return roomRepository.getPublicRooms(userId);
+  }
+
+  /**
+   * 指定されたルームに参加する.
+   *
+   * @param roomId 参加するルームID
+   * @param userId 参加するユーザID
+   */
+  public void joinPublicRoom(String roomId, String userId) {
+    roomRepository.insertJoinRoom(roomId, userId);
   }
 
   /**
@@ -69,13 +87,21 @@ public class RoomService {
    */
   private String generateRoomId() {
     String maxRoomId = roomRepository.getMaxRoomId();
-
     int nextSeq = 1;
     if (maxRoomId != null && maxRoomId.length() == (1 + ROOM_ID_SEQ_LENGTH)) {
       nextSeq = Integer.parseInt(maxRoomId.substring(1)) + 1;
     }
-
     return String.format("%s%0" + ROOM_ID_SEQ_LENGTH + "d", ROOM_ID_PREFIX, nextSeq);
   }
 
+  /**
+   * 指定されたルームにユーザが既に参加しているか確認する.
+   *
+   * @param roomId ルームID
+   * @param userId ユーザID
+   * @return 既に参加している場合はtrue
+   */
+  public boolean isRoomJoined(String roomId, String userId) {
+    return roomRepository.isRoomJoined(roomId, userId);
+  }
 }
