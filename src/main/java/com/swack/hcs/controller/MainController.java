@@ -83,4 +83,23 @@ public class MainController implements Loggable {
     return "redirect:/?roomId=" + roomId;
   }
 
+  /**
+   * チャット編集.
+   *
+   * @param roomId  部屋ID
+   * @param message メッセージ
+   * @return メイン画面
+   */
+  @PostMapping("/main/edit")
+  public String update(
+      @RequestParam(name = "chatLogId") Integer chatLogId,
+      @RequestParam(name = "userId") String userId,
+      @RequestParam(name = "message") String message) {
+    log().info("[/main/edit]chatLogId:" + chatLogId + " userId:" + userId + " message:" + message);
+
+    chatService.updateMessage(chatLogId, userId, message);
+
+    return "redirect:/?roomId=" + roomId;
+  }
+
 }

@@ -217,4 +217,25 @@ public class UserRepository {
     params.put("userId", userId);
     return jdbc.queryForObject(SQL, params, String.class);
   }
+
+  /**
+   * 指定されたチャットログID、ユーザーIDに対応するメッセージを更新する.
+   *
+   * @param chatLogId チャットログID
+   * @param userId    ユーザーID
+   * @param message   メッセージ
+   * @return 更新された行数
+   */
+  public int updateMessage(Integer chatLogId, String userId, String message) {
+    final String SQL = "UPDATE chatlog SET message = :message WHERE chatlogid = :chatLogId AND userid = :userId";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("chatLogId", chatLogId);
+    params.put("userId", userId);
+    params.put("message", message);
+
+    int updateRow = jdbc.update(SQL, params);
+
+    return updateRow;
+  }
 }

@@ -109,4 +109,20 @@ public class UserService {
   public String getUserName(String userId) {
     return userRepository.selectUserName(userId);
   }
+
+  /**
+   * チャットログ編集.
+   *
+   * @param chatLogId 編集するチャットログのID
+   * @param userId    ユーザーのID
+   * @param message   新しいメッセージの内容
+   * @return 編集が成功した場合はtrue
+   */
+  public boolean updateMessage(Integer chatLogId, String userId, String message) {
+    int rows = userRepository.updateMessage(chatLogId, userId, message);
+    if (rows == 1) {
+      return true;
+    }
+    return false;
+  }
 }
