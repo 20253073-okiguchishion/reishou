@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 /**
  * 部屋参加コントローラ.
@@ -47,24 +49,17 @@ public class JoinRoomController implements Loggable {
    * @return 遷移先
    */
   @PostMapping("/joinroom")
-  public String post(@RequestParam("roomId") String roomId, Model model) {
-    log().info("[joinroom:post]roomId:" + roomId);
-
+  public String post(@RequestParam(name = "roomId", required = false) List<String> roomIds, Model model) {
+    if (roomIds == null || roomIds.isEmpty()) {
+      model.addAttribute("errorMsg", "参加するルームが選択されていません。");
+      List<Room> publicRooms = roomService.getPublicRooms(loginService.getLoginedUserId());
+      model.addAttribute("publicRooms", publicRooms);
+      return "joinroom";
+    }
     String userId = loginService.getLoginedUserId();
-
-    Room room = roomService.getRoom(roomId);
-    if (room == null) {
-      model.addAttribute("errorMsg", "指定された部屋は存在しません。");
-      return "joinroom";
+    for (String roomId : roomIds) {
+      roomService.joinPublicRoom(roomId, userId);
     }
-
-    if (roomService.isRoomJoined(roomId, userId)) {
-      model.addAttribute("errorMsg", "既にこのルームに参加しています。");
-      return "joinroom";
-    }
-
-    roomService.joinPublicRoom(roomId, userId);
-    return "redirect:/?roomId=" + roomId;
+    return "redirect:/?roomId=" + roomIds.get(0);
   }
-
 }

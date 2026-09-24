@@ -1,6 +1,8 @@
 package com.swack.hcs.controller;
 
+import com.swack.hcs.repository.ChatRepository;
 import com.swack.hcs.service.LoginService;
+import com.swack.hcs.service.UserService;
 import com.swack.hcs.util.AppConstants;
 import com.swack.hcs.util.Loggable;
 
@@ -17,30 +19,44 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LoginController implements Loggable {
 
+  private final ChatRepository chatRepository;
+
+  @Autowired
+  private UserService userService;
+
   @Autowired
   private LoginService loginService;
+
+  LoginController(ChatRepository chatRepository) {
+    this.chatRepository = chatRepository;
+  }
 
   /**
    * ログイン画面表示.
    *
-   * @return ログイン画面
+   * @return 前回ログインしたユーザーの、ログイン状態保持になっていればチャット画面、されていなければログイン画面
    */
   @GetMapping("/login")
   public String get() {
+    /*if (loginService.isLogin() && userService.loginStore(loginService.getLoginedUserId())) {
+      return "redirect:/?roomId=R0000";
+    }*/
     return "login";
   }
 
   /**
    * ログイン.
    *
-   * @param mailAddress メールアドレス
-   * @param password    パスワード
-   * @param model       モデル
+   * @param mailAddress   メールアドレス
+   * @param password      パスワード
+   * @param isLoginStore 「ログイン状態保持」のチェックが入っていた場合はloginStore、そうでなければnull
+   * @param model         モデル
    * @return チャット画面
    */
   @PostMapping("/login")
   public String login(@RequestParam(name = "mailAddress") String mailAddress,
-      @RequestParam(name = "password") String password, Model model) {
+      @RequestParam(name = "password") String password,
+      @RequestParam (name = "isLoginStore", required = false) String isLoginStore, Model model) {
     log().info("[login:post]mailAddress:" + mailAddress);
 
     // ログイン処理
@@ -48,6 +64,11 @@ public class LoginController implements Loggable {
     if (!result) {
       model.addAttribute("errorMsg", AppConstants.MSG_ERR_LOGIN_PARAM_MISTAKE);
       return "login";
+    }
+
+    // 「ログイン状態保持」のチェックが入っているか？
+    if (isLoginStore != null) {
+      userService.loginStore(loginService.getLoginedUserId());
     }
 
     return "redirect:/?roomId=R0000";
@@ -70,8 +91,3 @@ public class LoginController implements Loggable {
     return "redirect:/login";
   }
 }
-
-// シックス⁉️セブ〜ン✨
-
-//test
-

@@ -25,28 +25,31 @@
     />
 
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" />
-    <link rel="stylesheet" href="../static/css/joinroom.css" th:href="@{/css/joinroom.css}" />
+    <link rel="stylesheet" href="../static/css/addMember.css" th:href="@{/css/addMember.css}" />
   </head>
 
   <body>
     <div class="container w-90 h-100" style="max-width: 700px">
       <div class="card">
-        <h2 class="fw-bold mt-4">まだ参加していない公開ルームに参加する</h2>
+        <h2 class="fw-bold mt-4">メンバー招待</h2>
 
-        <form method="post" th:action="@{/joinroom}">
+        <form method="post" th:action="@{/joinmember}">
           <div class="form-group mt-4" >
-            <label class="fw-bolder">まだ参加していない公開ルーム</label>
-            <select id="roomList" name="roomId" multiple="multiple">
-              <option th:each="publicRooms : ${publicRooms}" th:text="${publicRooms.roomName}"th:value="${publicRooms.roomId}">#roomname</option>
+            <p class="bg-danger text-light" th:text="${errorMessage}">#errorMessage</p>
+            <label class="fw-bolder">まだ参加していないメンバー</label>
+            <select id="userList" name="userIds" multiple="multiple">
+              <option th:each="joinableUsers : ${joinableUsers}" th:text="${joinableUsers.userName}" th:value="${joinableUsers.userId}">#username</option>
             </select>
-            <span class="text-secondary ms-2">参加したいルームを選んでください。</span>
+            <span class="text-secondary ms-2">招待するメンバーを選んでください。</span>
           </div>
 
           <div class="float-end mt-3">
             <a class="text-decoration-none" href="/"
               ><input type="button" class="btn btn-danger" value="キャンセル"
             /></a>
-            <button id="send" class="btn btn-secondary" value="join" disabled>参加する</button>
+            <button id="send" class="btn btn-secondary" value="U****" name="roomId" >選択したメンバーを招待する</button>
+            <!-- hiddenで隠す java scriptでvalue書き換え-->
+            <p id = "hiddenRoomId" th:value = "${roomId}" hidden></p>
           </div>
         </form>
       </div>
@@ -60,6 +63,6 @@
       crossorigin="anonymous"
     ></script>
 
-    <script src="../static/js/common-join.js" th:src="@{/js/common-join.js}"></script>
+    <script src="../static/js/joinmember.js" th:src="@{/js/joinmember.js}"></script>
   </body>
 </html>

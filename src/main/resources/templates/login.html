@@ -5,28 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Swack - ログイン画面</title>
-
+    <!-- CDN : Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <link rel="icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
-
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" />
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}" />
   </head>
 
   <body id="body">
+    <div class="login_banner">このページを見るためにはログインする必要があります。</div>
     <div class="container">
-      <h1>Swack</h1>
-      <h2>ログイン</h2>
+      <h1><strong>Swack</strong></h1>
+      <h2><strong>ログイン</strong></h2>
       <p id="errorMsg" class="error" th:text="${errorMsg}">#errorMsg</p>
       <div class="card">
         <form id="loginForm" th:action="login" method="post">
-          <input type="email" id="mailAddress" name="mailAddress" placeholder="xxxxxx@xxx.xxx" />
-          <input type="password" id="password" name="password" placeholder="パスワード" />
-          <input type="submit" value="ログイン" />
+          <input type="email" id="mailAddress" name="mailAddress" placeholder="メールアドレス" />
+          <div class="position-relative mb-3">
+            <input type="password" id="password" name="password" placeholder="パスワード" style="padding-right: 2.5rem;" />
+            <span id="buttonEye" class="fa fa-eye position-absolute top-50 translate-middle-y end-0 me-3" onclick="pushHideButton()" style="cursor: pointer; z-index: 10;"></span>
+          </div>
+          <input type="checkbox" id="chk" name="isLoginStore" value="isLoginStore" class="form-check-input" />
+          <label class="lh-1 d-block">
+            <span id="check_label">ログイン状態を保持する</span>
+          </label>
+          <button type="submit" id="send" class="btn btn-secondary btn-pop" onclick="checkKeepLogin()" disabled >ログイン</button>
         </form>
       </div>
 
-      <a href="signup">&gt;&gt; 新規登録画面へ</a>
+      <div >
+        <p class="signup">アカウントを持っていない方は<a type="signup_link" href="signup"> 新規登録画面へ</a></p>
+      </div>
+
     </div>
+    <!-- CDN : Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
     <!-- container -->
   </body>
+  <script src="../static/js/login.js" th:src="@{/js/login.js}"></script>
 </html>
+<!-- test -->

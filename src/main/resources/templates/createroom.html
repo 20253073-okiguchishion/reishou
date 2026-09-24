@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
 
     <title>Swack - ルーム作成画面</title>
 
@@ -17,28 +24,31 @@
     />
 
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" href="../static/css/createroom.css" th:href="@{/css/createroom.css}" />
   </head>
 
   <body>
-    <div class="container w-90 h-100" style="max-width: 500px">
+    <div class="container w-100 h-100" style="max-width: 700px">
+      <div class="card">
       <h2 id="pageTitle" class="fw-bold mt-4">ルームを作成する</h2>
       <p>
         ルームとはメンバーがコミュニケーションを取る場所です。特定のトピックに基づいてルームを作ると良いでしょう
         (例: #営業)。
       </p>
 
-      <form method="post">
+      <form method="post" th:action="@{/createroom}">
         <div class="form-check form-switch mt-4">
           <input type="checkbox" id="chk" name="privated" class="form-check-input" />
           <label class="fw-bolder fs-5 lh-1 d-block"
             ><span id="check_label">パブリック</span></label
           >
+          <br>
           <p id="check_text" class="mt-2">
             このルームは、ワークスペースのメンバーであれば誰でも閲覧・参加することができます。
           </p>
         </div>
 
-        <p th:if="${errorMsg}" th:text="${errorMsg}" class="bg-danger text-light"></p>
+        <p class="bg-danger text-light" th:text="${errorMessage}">#errorMessage</p>
 
         <div class="form-group">
           <label class="form-label">名前</label>
@@ -53,14 +63,26 @@
           <span class="text-secondary ms-2">ルームの名前を入力してください。</span>
         </div>
 
+        <!-- ユーザー招待 -->
+          <div class="form-group mt-5">
+              <label class="fw-bolder">メンバーを招待する</label>
+              <br>
+              <select id="list" name="inviteUserIds" multiple="multiple">
+                <option th:each="user : ${users}" th:text="${user.userName}" th:value="${user.userId}">#username</option>
+              </select>
+              <br>
+              <span class="text-secondary ms-2">ルームに招待したいメンバーを選んでください。</span>
+          </div>
+
         <div class="float-end mt-3">
           <a class="text-decoration-none" href="/">
-            <input type="button" class="btn btn-default" value="キャンセル" />
+            <input type="button" class="btn btn-danger" value="キャンセル" />
           </a>
-          <button id="send" class="btn btn-default">ルームを作成する</button>
+          <button id="send" class="btn btn-secondary" disabled>ルームを作成する</button>
         </div>
       </form>
     </div>
+  </div>
     <!-- container -->
 
     <!-- CDN : Bootstrap Bundle with Popper -->

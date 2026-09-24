@@ -18,7 +18,7 @@
   width: 100%; /* 幅を100%に設定 */
   height: 40px; /* 高さを40pxに設定 */
   padding: 0 5px; /* 左右の内側の余白を5pxに設定 */
-  background-color: #3E0B3F; /* 背景色を黒に設定 */
+  background-color: #2f62ef96;
   color: white; /* テキストの色を白に設定 */
 }
 
@@ -39,7 +39,7 @@
   overflow: auto; /* 内容がオーバーフローしたらスクロールバー表示 */
   width: 200px; /* 幅を200pxに設定 */
   height: 100%; /* 高さを100%に設定 */
-  background-color: #532455; /* 背景色を設定 */
+  background: linear-gradient(#2f62ef96, #d406ae40);/*色*/
   color: white; /* テキストの色を白に設定 */
 }
 
@@ -193,5 +193,43 @@
 
 /* 送信ボタンのスタイル */
 .contents-footer .form-wrap input[type="submit"] {
-  width: 50px; /* 送信ボタンの幅を50pxに設定 */
+  width: 56px; /* 送信ボタンの幅を50pxに設定 */
+}
+
+/* 紫ボタン　*/
+.btn-purple {
+  color: #fff;
+  background-color: #6f42c1;
+  border-color: #5123a4;
+}
+.btn-purple:hover {
+  color: #fff;
+  background-color: #5123a4;
+  border-color: #5123a4;
+}
+.btn-purple:not(:disabled):not(.disabled):active,
+.btn-purple:focus {
+  color: #fff;
+  background-color: #5123a4;
+  border-color: #5123a4;
+}
+.btn:focus-visible {
+  color: #fff;
+  background-color: #5123a4;
+  border-color: #5123a4;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, .5);
+}
+/* ボタンデザイン */
+.btn-pop {
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  border-radius: 4px;/*角の丸み*/
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+}
+.btn-square-pop:active {
+  /*押したとき*/
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
 }

@@ -1,6 +1,8 @@
 package com.swack.hcs.repository;
 
 import com.swack.hcs.bean.Room;
+import com.swack.hcs.bean.UserData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -149,4 +151,130 @@ public class RoomRepository {
     return count != null && count > 0;
   }
 
+  /**
+   * 指定されたルーム名に基づいたルームIDを取得する.
+   *
+   * @param roomName ルーム名
+   * @return ルームID
+   */
+  public String getRoomIdByName(String roomName) {
+    final String sql = "SELECT ROOMID FROM ROOMS WHERE ROOMNAME = :roomName";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("roomName", roomName);
+
+    return jdbc.queryForObject(sql, params, String.class);
+  }
+
+  /**
+   * 指定されたルームIDに基づいたルーム名を取得する.
+   */
+  public List<Room> getUserRooms(String userId) {
+    final String sql = "SELECT ROOMID, ROOMNAME FROM ROOMS WHERE ROOMID IN (SELECT ROOMID FROM JOINROOM WHERE USERID = :userId)";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("userId", userId);
+
+    List<Map<String, Object>> resultList = jdbc.queryForList(sql, params);
+
+    List<Room> roomList = new ArrayList<>();
+    for (Map<String, Object> map : resultList) {
+      String roomId = (String) map.get("ROOMID");
+      String roomName = (String) map.get("ROOMNAME");
+      roomList.add(new Room(roomId, roomName));
+    }
+
+    return roomList;
+  }
+
+  /**
+   * 指定されたユーザーが参加している直接チャットルームの一覧を取得する.
+   * @param userId
+   * @return
+   */
+  public List<Room> getDirectRooms(String userId) {
+    final String sql = "SELECT R.ROOMID, U.USERNAME AS ROOMNAME FROM JOINROOM R JOIN USERS U ON R.USERID = U.USERID WHERE R.USERID <> :userId1 AND ROOMID IN (SELECT R.ROOMID FROM JOINROOM J JOIN ROOMS R ON J.ROOMID = R.ROOMID WHERE J.USERID = :userId2 AND R.DIRECTED = TRUE) ORDER BY R.USERID";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("userId1", userId);
+    params.put("userId2", userId);
+
+    List<Map<String, Object>> resultList = jdbc.queryForList(sql, params);
+
+    List<Room> roomList = new ArrayList<>();
+    for (Map<String, Object> map : resultList) {
+      String roomId = (String) map.get("ROOMID");
+      String roomName = (String) map.get("ROOMNAME");
+      roomList.add(new Room(roomId, roomName));
+    }
+
+    return roomList;
+  }
+
+  /**
+   * 指定されたルームに参加可能なユーザーの一覧を取得する.
+   * @param roomId
+   * @return
+   */
+  public List<UserData> getUsers(String userId) {
+    final String sql = "SELECT USERID, USERNAME FROM USERS WHERE USERID <> :userId";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("userId", userId);
+
+    List<Map<String, Object>> resultList = jdbc.queryForList(sql, params);
+
+    List<UserData> userList = new ArrayList<>();
+    for (Map<String, Object> map : resultList) {
+      String targetuserId = (String) map.get("USERID");
+      String userName = (String) map.get("USERNAME");
+      userList.add(new UserData(targetuserId, userName));
+    }
+
+    return userList;
+  }
+
+  /**
+   * 指定されたルームに参加可能なユーザーの一覧を取得する.
+   * @param roomId
+   * @return
+   */
+  public List<UserData> getJoinableUsers(String roomId) {
+    final String sql = "SELECT USERID, USERNAME FROM USERS WHERE USERID NOT IN (SELECT USERID FROM JOINROOM WHERE ROOMID = :roomId)";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("roomId", roomId);
+
+    List<Map<String, Object>> resultList = jdbc.queryForList(sql, params);
+
+    List<UserData> userList = new ArrayList<>();
+    for (Map<String, Object> map : resultList) {
+      String targetuserId = (String) map.get("USERID");
+      String userName = (String) map.get("USERNAME");
+      userList.add(new UserData(targetuserId, userName));
+    }
+
+    return userList;
+  }
+
+  /**
+   * 指定されたダイレクトルームに参加可能なユーザーの一覧を取得する.
+   * @param userId
+   * @return まだダイレクトルームに参加していないユーザーの一覧
+   */
+  public List<UserData> getDirectUsers(String userId) {
+    final String SQL = "SELECT USERID, USERNAME FROM USERS WHERE USERID <> :userId AND USERID NOT IN (SELECT USERID FROM JOINROOM J1 WHERE J1.ROOMID IN (SELECT J2.ROOMID FROM JOINROOM J2 JOIN ROOMS R ON J2.ROOMID = R.ROOMID WHERE J2.USERID = :userId AND R.DIRECTED = TRUE) AND J1.USERID <> :userId)";
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("userId", userId);
+
+    List<Map<String, Object>> resultList = jdbc.queryForList(SQL, params);
+    List<UserData> userList = new ArrayList<>();
+    for (Map<String, Object> map : resultList) {
+      String targetUserId = (String) map.get("USERID");
+      String userName = (String) map.get("USERNAME");
+      userList.add(new UserData(targetUserId, userName));
+    }
+    return userList;
+  }
 }

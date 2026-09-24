@@ -126,7 +126,7 @@ public class ChatRepository {
         room.createdUserId(),
         true,
         true,
-        2 // 2人で固定
+        2
     );
 
     return direct;

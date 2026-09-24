@@ -32,12 +32,11 @@
           <span th:text="${user.userName}">#userName</span>
         </div>
         <form action="logout" id="logoutForm" method="get">
-          <input
+          <button
             type="submit"
-            class="btn btn-light btn-sm"
-            value="ログアウト"
+            class="btn btn-danger btn-sm ptn-pop"
             onclick="logout();"
-          />
+          >ログアウト</button>
         </form>
       </header>
       <section class="main">
@@ -47,8 +46,8 @@
           <details open>
             <summary>
               ルーム
-              <a href="createroom"><button class="btn btn-light btn-sm">作成</button></a>
-              <a href="joinroom"><button class="btn btn-warning btn-sm">参加</button></a>
+              <a href="createroom"><button class="btn btn-light btn-sm btn-pop">作成</button></a>
+              <a href="joinroom"><button class="btn btn-primary btn-sm btn-pop">参加</button></a>
             </summary>
             <div th:each="room : ${roomList}">
               <a class="list-name" th:href="@{/(roomId=${room.roomId})}">
@@ -62,7 +61,7 @@
           <details open>
             <summary>
               ダイレクト
-              <a href="joindirect"><button class="btn btn-warning btn-sm">追加</button></a>
+              <a href="joindirect"><button class="btn btn-primary btn-sm btn-pop">追加</button></a>
             </summary>
             <div th:each="direct : ${directList}">
               <a class="list-name" th:href="@{/(roomId=${direct.roomId})}"
@@ -81,7 +80,7 @@
           <div th:if="${!room.directed}">
             <div class="join-member-button">
               <a th:href="@{/joinmember(roomId=${room.roomId})}"
-                ><button class="btn btn-warning btn-sm">メンバー追加</button></a
+                ><button class="btn btn-primary btn-sm btn-pop">メンバー追加</button></a
               >
             </div>
           </div>
@@ -116,9 +115,11 @@
           <div class="contents-footer">
             <form id="messageForm" th:action="main" method="post">
               <input type="hidden" name="roomId" th:value="${room.roomId}" />
-              <div class="form-wrap">
-                <input type="text" id="message" name="message" autocomplete="off" />
-                <input type="submit" id="send" value="送信" />
+              <div class="form-wrap input-group">
+                <input type="text" class="form-control" placeholder="メッセージを入力" id="message" name="message" autocomplete="off" />
+                <button type="submit" class="btn btn-secondary" id="send">
+                  <img th:src="@{/images/send.png}" alt="送信" style="width: 30px; height: auto;" />
+                </button>
               </div>
             </form>
           </div>

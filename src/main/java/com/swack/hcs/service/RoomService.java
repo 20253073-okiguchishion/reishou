@@ -1,6 +1,7 @@
 package com.swack.hcs.service;
 
 import com.swack.hcs.bean.Room;
+import com.swack.hcs.bean.UserData;
 import com.swack.hcs.repository.RoomRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class RoomService {
 
   @Autowired
   private RoomRepository roomRepository;
+
+  @Autowired
+  private UserService userService;
 
   /**
    * 指定されたルームIDに基づいたルーム情報取得.
@@ -48,11 +52,11 @@ public class RoomService {
    * 新しいルームを作成する.
    *
    * @param roomName      ルーム名
-   * @param createdUserId 作成者のユーザID
    * @param privated      非公開ルームかどうか
+   * @param createdUserId 作成者のユーザID
    * @return 作成されたルーム情報
    */
-  public Room createRoom(String roomName, String createdUserId, boolean privated) {
+  public Room createRoom(String roomName, boolean privated, String createdUserId) {
     String roomId = generateRoomId();
     Room room = new Room(roomId, roomName, createdUserId, false, privated, 1);
     roomRepository.insertRoom(room);
@@ -103,5 +107,81 @@ public class RoomService {
    */
   public boolean isRoomJoined(String roomId, String userId) {
     return roomRepository.isRoomJoined(roomId, userId);
+  }
+
+  /**
+   * 指定されたルーム名が既に存在するか確認する.
+   * @param roomName
+   * @return
+   */
+  public boolean isRoomNameExists(String roomName) {
+    return roomRepository.existsByRoomName(roomName);
+  }
+
+  /**
+   * 指定されたユーザーが参加しているルームの一覧を取得する.
+   * @param userId
+   * @return
+   */
+  public List<Room> getUserRooms(String userId) {
+    return roomRepository.getUserRooms(userId);
+  }
+
+  /**
+   * 指定されたユーザーが参加している直接チャットルームの一覧を取得する.
+   * @param userId
+   * @return
+   */
+  public List<Room> getDirectRooms(String userId) {
+    return roomRepository.getDirectRooms(userId);
+  }
+
+  /**
+   * 指定されたルームにユーザーを招待する.
+   * @param roomId
+   * @param userIds
+   */
+  public void inviteUsers(String roomId, List<String> userIds) {
+    for (String userId : userIds) {
+      roomRepository.insertJoinRoom(roomId, userId);
+    }
+  }
+
+  /**
+   * 指定されたユーザーの一覧を取得する.
+   * @param userId
+   * @return
+   */
+  public List<UserData> getUsers(String userId) {
+    return roomRepository.getUsers(userId);
+  }
+
+  /**
+   * 指定されたルームに参加可能なユーザーの一覧を取得する.
+   * @param roomId
+   * @return
+   */
+  public List<UserData> getJoinableUsers(String roomId) {
+    return roomRepository.getJoinableUsers(roomId);
+  }
+
+  /**
+   * ダイレクトメッセージ用のルームを作成する.
+   * @param createdUserId 作成者のユーザーID
+   * @param targetUserId 招待するユーザーのID
+   * @return 作成されたルーム情報
+   */
+  public Room createDirectRoom(String createdUserId, String targetUserId) {
+    String roomId = generateRoomId();
+    String roomName = userService.getUserName(targetUserId); // ルーム名を相手のユーザー名に設定
+    Room room = new Room(roomId, roomName, createdUserId, true, true, 2);
+    roomRepository.insertRoom(room);
+    roomRepository.insertJoinRoom(roomId, createdUserId);
+    roomRepository.insertJoinRoom(roomId, targetUserId);
+    return room;
+  }
+
+  public List<UserData> getDirectUsers(String userId) {
+    return roomRepository.getDirectUsers(userId);
   }
 }

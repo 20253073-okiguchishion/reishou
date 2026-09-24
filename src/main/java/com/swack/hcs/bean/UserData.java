@@ -53,4 +53,7 @@ public record UserData(
     }
   }
 
+  public UserData(String userId, String userName){
+    this(userId, userName, "", "", "", "");
+  }
 }

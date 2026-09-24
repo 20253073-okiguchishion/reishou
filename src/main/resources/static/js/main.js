@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       // メッセージ入力欄にテキストがある場合、送信ボタンを有効化
       elSendButton.style.color = "#ffffff";
-      elSendButton.style.backgroundColor = "#008952";
+      elSendButton.style.backgroundColor = "#5865F2";
       elSendButton.disabled = false;
     }
   }
@@ -50,6 +50,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // ログアウト処理を行う関数
 function logout() {
   const elLogoutForm = document.getElementById("logoutForm");
-
+  window.localStorage.removeItem("mailAddress");
+  window.localStorage.removeItem("password");
+  window.localStorage.setItem("keepLogin", false);
   elLogoutForm.submit();
 }

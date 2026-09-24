@@ -2,23 +2,40 @@
 document.addEventListener("DOMContentLoaded", () => {
   // HTML要素を変数に代入
   const elSendButton = document.getElementById("send");
+  const elName = document.getElementById("name");
   const elMailAddress = document.getElementById("mailAddress");
   const elPassword = document.getElementById("password");
-  const elLoginForm = document.getElementById("loginForm");
 
-  if (window.localStorage.getItem("keepLogin") === "true") {
-    elMailAddress.value = window.localStorage.getItem("mailAddress");
-    elPassword.value = window.localStorage.getItem("password");
-    elLoginForm.submit();
-  }
-
-  elMailAddress.addEventListener("keyup", () => {
-    if (elMailAddress.value.length === 0 || elPassword.value.length === 0) {
+  elName.addEventListener("keyup", () => {
+    if (
+      elName.value.length === 0 ||
+      elMailAddress.value.length === 0 ||
+      elPassword.value.length === 0
+    ) {
       // 空の場合：primaryを消して、secondary（グレー）にする
       elSendButton.classList.remove("btn-primary");
       elSendButton.classList.add("btn-secondary");
       elSendButton.disabled = true;
     } else {
+      // 入力あり：secondaryを消して、primary（青）に戻す
+      elSendButton.classList.remove("btn-secondary");
+      elSendButton.classList.add("btn-primary");
+      elSendButton.disabled = false;
+    }
+  });
+
+  elMailAddress.addEventListener("keyup", () => {
+    if (
+      elMailAddress.value.length === 0 ||
+      elName.value.length === 0 ||
+      elPassword.value.length === 0
+    ) {
+      // 空の場合：primaryを消して、secondary（グレー）にする
+      elSendButton.classList.remove("btn-primary");
+      elSendButton.classList.add("btn-secondary");
+      elSendButton.disabled = true;
+    } else {
+      // メッセージ入力欄にテキストがある場合、送信ボタンを有効化
       // 入力あり：secondaryを消して、primary（青）に戻す
       elSendButton.classList.remove("btn-secondary");
       elSendButton.classList.add("btn-primary");
@@ -27,33 +44,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   elPassword.addEventListener("keyup", () => {
-    if (elPassword.value.length === 0 || elMailAddress.value.length === 0) {
+    if (
+      elPassword.value.length === 0 ||
+      elName.value.length === 0 ||
+      elMailAddress.value.length === 0
+    ) {
       // 空の場合：primaryを消して、secondary（グレー）にする
       elSendButton.classList.remove("btn-primary");
       elSendButton.classList.add("btn-secondary");
       elSendButton.disabled = true;
     } else {
+      // メッセージ入力欄にテキストがある場合、送信ボタンを有効化
       // 入力あり：secondaryを消して、primary（青）に戻す
       elSendButton.classList.remove("btn-secondary");
       elSendButton.classList.add("btn-primary");
       elSendButton.disabled = false;
     }
   });
-
-
 });
-
-function checkKeepLogin() {
-  if (document.getElementById("chk").checked) {
-    window.localStorage.setItem("mailAddress", document.getElementById("mailAddress").value);
-    window.localStorage.setItem("password", document.getElementById("password").value);
-    window.localStorage.setItem("keepLogin", true);
-  }else if(!document.getElementById("chk").checked){
-    window.localStorage.removeItem("mailAddress");
-    window.localStorage.removeItem("password");
-    window.localStorage.setItem("keepLogin", false);
-  }
-}
 
 function pushHideButton() {
   var txtPass = document.getElementById("password");
@@ -66,4 +74,3 @@ function pushHideButton() {
     btnEye.className = "fa fa-eye-slash";
   }
 }
-// test

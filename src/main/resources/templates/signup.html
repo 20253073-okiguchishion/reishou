@@ -5,18 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Swack - 新規登録画面</title>
-
+    <!-- CDN : Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <link rel="icon" href="../static/images/favicon.ico" th:href="@{/images/favicon.ico}" />
 
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}" />
     <link rel="stylesheet" href="../static/css/signup.css" th:href="@{/css/signup.css}" />
   </head>
 
-  <body>
+  <body class="body" id="body">
     <div class="container">
-      <h1>Swack</h1>
-      <h2>新規登録</h2>
+      <h1><strong>Swack</strong></h1>
+      <h2><strong>新規登録</strong></h2>
+      <p id="errorMsg" class="error" th:text="${errorMsg}">#errorMsg</p>
+      <div class="card">
+        <form id="signupForm" th:action="signup" method="post">
+          <input type="name" id="name" name="name" placeholder="ユーザー名" />
+          <input type="email" id="mailAddress" name="mailAddress" placeholder="xxxxxx@swack.com" />
+          <div class="position-relative mb-3">
+            <input type="password" id="password" name="password" placeholder="パスワード(8文字以上、大文字、小文字、数字必須)" style="padding-right: 2.5rem;" />
+            <span id="buttonEye" class="fa fa-eye position-absolute top-50 translate-middle-y end-0 me-3" onclick="pushHideButton()" style="cursor: pointer; z-index: 10;"></span>
+          </div>
+          <button type="submit" id="send" class="btn btn-secondary btn-pop" disabled>アカウント新規登録</button>
+        </form>
     </div>
+
+    <div >
+      <p class="login">すでにアカウントを持っている方は<a type="login_link" href="login"> ログイン画面へ</a></p>
+    </div>
+    <!-- CDN : Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
     <!-- container -->
+    <script src="../static/js/signup.js" th:src="@{/js/signup.js}"></script>
   </body>
 </html>

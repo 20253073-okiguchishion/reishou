@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(#2f62ef96, #d406ae40);/*背景色*/
+  min-height: 100vh;
+  background-attachment: fixed;/*背景を固定*/
+  overflow: hidden;/*スクロールできないように設定*/
+}
+.card {
+  margin: 0;
+  margin-top: 10%;
+  padding: 20px;
+  width: 100%;
+  padding: 30px;
+  background-color: #efefef;
+  border-radius: 5px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+
+  text-align: left;
+}
+
+.card span {
+  float: left;
+  margin-top: 1px;
+  margin-left: 5px;
+  font-size: 0.9em;
+}
+
+.card input {
+  border-radius: 4px;
+}
+
+.ms-parent {
+  width: 250px !important;
+  display: block !important;
+}
+
+.ms-parent .ms-drop ul > li label span {
+  float: none !important;
+  display: inline-block !important;
+  margin: 0 0 0 5px !important;
+  position: static !important;
+}
